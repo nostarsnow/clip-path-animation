@@ -8,20 +8,71 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta name="renderer" content="webkit" />
-		<title>首页</title>
-		<link rel="shortcut icon" href="/favicon.ico" />
+		<title>使用clip-path快速生成逐行展示的动画</title>
+		<link rel="icon" href="https://zuhaowan.zuhaowan.com/static/www3.0/nostar-games/common/img/icon.jpg" />
 	</head>
 
-</html>
+	<link rel="stylesheet" href="./pages/index/css/index.css" />
+	</head>
 
-<link rel="stylesheet" href="/common/css/common.css" />
-<link rel="stylesheet" href="/pages/index/css/index.css" />
-</head>
+	<body>
+		<div id="app">
+			<div class="doc">
+				<pre>
+// 在scss中定义mixin
 
-<body>
-	首页
-	<script src="/common/js/common.js"></script>
-	<script src="/pages/index/js/index.js"></script>
-</body>
+@mixin createClipPathKeyframes($animation-name, $line: 1) {
+    @keyframes #{$animation-name} {
+        0% {
+        visibility: visible;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0, 0 #{100% / $line}, 0 #{100% / $line});
+        }
+        @for $i from 1 through $line - 1 {
+        $percent: 100% / $line * $i;
+        $next: 100% / $line * ($i + 1);
+        $prev: 100% / $line * ($i - 1);
+        #{$percent} {
+            visibility: visible;
+            clip-path: polygon(0 0, 100% 0, 100% #{$prev}, 100% #{$prev}, 100% #{$percent}, 0 #{$percent});
+        }
+        #{$percent + 0.01} {
+            visibility: visible;
+            clip-path: polygon(0 0, 100% 0, 100% #{$percent}, 0 #{$percent}, 0 #{$next}, 0 #{$next});
+        }
+        }
+        $prevLast: 100% / $line * ($line - 1);
+        100% {
+        visibility: visible;
+        clip-path: polygon(0 0, 100% 0, 100% #{$prevLast}, 100% #{$prevLast}, 100% 100%, 0 100%);
+        }
+    }
+}
+
+
+// 在scss使用。会生成 @keyframes clip-right{ }
+
+@include createClipPathKeyframes(clip-right, 2);
+
+// 如若想在css中使用。自己想办法。。。
+
+
+            </pre>
+			</div>
+			<div class="show">
+				<h1>clip-path-animation by nostar</h1>
+				<h2>使用clip-path快速生成逐行展示的动画</h2>
+				<div>
+					请选择动画行数：<select id="select"></select>
+				</div>
+
+				<div id="demo-box">
+					<div id="demo">
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src="./pages/index/js/index.js"></script>
+	</body>
 
 </html>

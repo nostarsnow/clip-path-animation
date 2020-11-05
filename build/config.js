@@ -23,7 +23,7 @@ const port = 8888
 module.exports = {
   dev: {
     assetsSubDirectory: path.dist,
-    assetsPublicPath: `${devIsHttps ? 'https' : 'http'}://127.0.0.1:${port}/`,
+    assetsPublicPath: `${devIsHttps ? 'https' : 'http'}://192.168.3.107:${port}/`,
     devServer:{
       https: devIsHttps,
       port
@@ -63,14 +63,14 @@ module.exports = {
   build: {
     assetsRoot: path.dist,
     assetsSubDirectory: path.dist,
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
     bundleAnalyzerReport: process.env.npm_config_report,
     hash: false,
     uglify: true,
     cssmin: true,
     htmlMinify: false,
     htmlBeautify: true,
-    sourceMap: true,
+    sourceMap: false,
     includeDir: [],
   },
   globals: {

@@ -1,0 +1,105 @@
+#app {
+  text-align: center;
+  display: flex;
+  margin: 0 200px;
+}
+.doc {
+  flex: 1;
+  background: #eee;
+  text-align: left;
+  padding: 10px;
+}
+.show {
+  flex: 1;
+}
+h1 {
+}
+#select {
+  width: 200px;
+  height: 32px;
+  line-height: 32px;
+}
+#demo-box {
+  width: 500px;
+  height: 500px;
+  background: #f2f2f2;
+  margin: 20px auto 0;
+}
+#demo {
+  width: 100%;
+  height: 100%;
+  background: green;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: 25px;
+  line-height: 1;
+  text-align: center;
+  align-items: center;
+  p {
+    margin: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+}
+@mixin createClipPathKeyframes($animation-name, $line: 1) {
+  @keyframes #{$animation-name} {
+    0% {
+      visibility: visible;
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 0,
+        0 0,
+        0 #{100% / $line},
+        0 #{100% / $line}
+      );
+    }
+    @for $i from 1 through $line - 1 {
+      $percent: 100% / $line * $i;
+      $next: 100% / $line * ($i + 1);
+      $prev: 100% / $line * ($i - 1);
+      #{$percent} {
+        visibility: visible;
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% #{$prev},
+          100% #{$prev},
+          100% #{$percent},
+          0 #{$percent}
+        );
+      }
+      #{$percent + 0.01} {
+        visibility: visible;
+        clip-path: polygon(
+          0 0,
+          100% 0,
+          100% #{$percent},
+          0 #{$percent},
+          0 #{$next},
+          0 #{$next}
+        );
+      }
+    }
+    $prevLast: 100% / $line * ($line - 1);
+    100% {
+      visibility: visible;
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% #{$prevLast},
+        100% #{$prevLast},
+        100% 100%,
+        0 100%
+      );
+    }
+  }
+}
+@for $i from 1 through 10 {
+  @include createClipPathKeyframes(clip-right-#{$i}, $i);
+  .clip-right-#{$i} {
+    animation: clip-right-#{$i} #{300 * $i}ms;
+  }
+}
